@@ -20,6 +20,9 @@ module.exports = () => {
   // logging config with winston
   winston.add(new winston.transports.File({ filename: "logfile.log" }));
   winston.add(
+    new winston.transports.Console({ colorize: true, prettyPrint: true }),
+  );
+  winston.add(
     new winston.transports.MongoDB({
       db: "mongodb://localhost/tools",
       level: "error",

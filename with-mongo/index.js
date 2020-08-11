@@ -3,9 +3,17 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const debugDB = require("debug")("app:db");
 const debugApp = require("debug")("app:app");
+const config = require("config");
 const tools = require("./routes/tools");
+const users = require("./routes/users");
+const auth = require("./routes/auth");
 const express = require("express");
 const app = express();
+
+if (!config.get("jwtPrivateKey")) {
+  debugApp("FATAL: jwtPrivateKey is missing");
+  process.exit(1);
+}
 
 // connect to mongoose
 mongoose
@@ -28,6 +36,8 @@ if (app.get("env") === "development") {
 }
 
 app.use("/api/tools", tools);
+app.use("/api/users", users);
+app.use("/api/auth", auth);
 
 const port = process.env.PORT || 3000;
 

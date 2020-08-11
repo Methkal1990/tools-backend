@@ -1,3 +1,5 @@
+const authZ = require("../middlewares/authz");
+const admin = require("../middlewares/admin")
 const { Tool, validate } = require("../models/tool");
 const express = require("express");
 const router = express.Router();
@@ -15,7 +17,7 @@ router.get("/:id", async (req, res) => {
   res.send(tool);
 });
 
-router.post("/", async (req, res) => {
+router.post("/", authZ, async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -28,7 +30,7 @@ router.post("/", async (req, res) => {
   res.send(tool);
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", authZ, async (req, res) => {
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
@@ -45,7 +47,7 @@ router.put("/:id", async (req, res) => {
   res.send(tool);
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", [authZ, admin], async (req, res) => {
   const tool = await Tool.findByIdAndRemove(req.params.id);
   if (!tool) return res.status(404).send("Tool was not found");
 

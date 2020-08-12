@@ -1,6 +1,7 @@
 const tools = require("../routes/tools");
 const users = require("../routes/users");
 const auth = require("../routes/auth");
+const roles = require("../routes/roles");
 const error = require("../middlewares/error");
 const express = require("express");
 const helmet = require("helmet");
@@ -15,5 +16,6 @@ module.exports = (app) => {
   app.use("/api/tools", tools);
   app.use("/api/users", users);
   app.use("/api/auth", auth);
+  app.use("/api/roles", roles);
   app.use(error);
 };

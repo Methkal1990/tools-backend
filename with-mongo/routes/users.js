@@ -1,4 +1,5 @@
 const authz = require("../middlewares/authz");
+const admin = require("../middlewares/admin");
 const express = require("express");
 const _ = require("lodash");
 const bcrypt = require("bcrypt");
@@ -64,7 +65,21 @@ router.post("/", async (req, res) => {
 });
 
 // get a specific user --> admin
+router.get("/:id", [authz, admin], async (req, res) => {
+  const user = await User.findById(req.params.id);
+  if (!user) return res.status(404).send("User was not found");
+  res.send(user);
+});
 // get all users --> admin
+router.get("/", [authz, admin], async (req, res) => {
+  const users = await User.find().select("-password");
+  res.send(users);
+});
 // remove a user --> admin
+router.delete("/:id", [authz, admin], async (req, res) => {
+  const user = await User.findByIdAndRemove(req.params.id);
+  if (!user) return res.status(404).send("user was not found");
 
+  res.send(user);
+});
 module.exports = router;

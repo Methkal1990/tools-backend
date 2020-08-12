@@ -3,7 +3,6 @@ const admin = require("../middlewares/admin")
 const { Tool, validate } = require("../models/tool");
 const express = require("express");
 const router = express.Router();
-const debugApp = require("debug")("app:app");
 
 router.get("/", async (req, res) => {
   const tools = await Tool.find().sort("-date");

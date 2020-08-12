@@ -1,8 +1,9 @@
 const winston = require("winston");
 require("winston-mongodb");
 require("express-async-errors");
+const morgan = require("morgan");
 
-module.exports = () => {
+module.exports = (app) => {
   process.on("uncaughtException", (err) => {
     winston.error(err.message, err);
     setTimeout(() => {
@@ -28,4 +29,6 @@ module.exports = () => {
       level: "error",
     }),
   );
+  // morgan requests logging
+  app.use(morgan("combined"));
 };

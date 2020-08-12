@@ -2,8 +2,8 @@ const winston = require("winston");
 const express = require("express");
 const app = express();
 
-require("./startup/logging")();
-require("./startup/config")(app);
+require("./startup/logging")(app);
+require("./startup/config")();
 require("./startup/routes")(app);
 require("./startup/db")();
 
